@@ -36,7 +36,7 @@ void read(Graph& graph, const char *nameOfFile) //then delete const
 	++number_of_vert;
 	//std::cout << "number of vertices " << number_of_vert << std::endl;
 
-	graph.resize(number_of_vert);
+	graph.resize(number_of_vert, size);
 	   
 	for(unsigned int i = 0; i < size; ++i)
 		graph.add(first_vect[i], second_vect[i], length_vect[i]);
