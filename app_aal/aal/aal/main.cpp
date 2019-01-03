@@ -26,19 +26,19 @@ void read(Graph& graph, const char *nameOfFile) //then delete const
 		std::cout << "size of vectors aren't equal" << std::endl;
 	}*/
 
-	unsigned int size = first_vect.size();
+	unsigned int number_of_edges = first_vect.size();
 
 	unsigned int number_of_vert = 0;
-	for (unsigned int i = 0; i < size; ++i) {
+	for (unsigned int i = 0; i < number_of_edges; ++i) {
 		if (number_of_vert < first_vect[i]) number_of_vert = first_vect[i];
 		if (number_of_vert < second_vect[i]) number_of_vert = second_vect[i];
 	}
 	++number_of_vert;
 	//std::cout << "number of vertices " << number_of_vert << std::endl;
 
-	graph.resize(number_of_vert, size);
+	graph.resize(number_of_vert, number_of_edges);
 	   
-	for(unsigned int i = 0; i < size; ++i)
+	for(unsigned int i = 0; i < number_of_edges; ++i)
 		graph.add(first_vect[i], second_vect[i], length_vect[i]);
 
 	file.close();
@@ -63,7 +63,7 @@ int main(/*int argc, char **argv*/) {
 	graph.findWay(); // here must be variable which will have way and length of way
 
 
-	std::cout << "Hello world";
+	//std::cout << "Hello world";
 
 	int a;
 	std::cin >> a;
