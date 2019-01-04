@@ -21,43 +21,53 @@ void Graph::resize(unsigned int number_of_vertices, unsigned int number_of_edges
 	vertices.resize(number_of_vertices);
 }
 
-unsigned int Graph::countOddVertices() //if number of odd vertices is more than 3, function stop counting
+std::vector<unsigned int> Graph::getOddVertices() //if number of odd vertices is more than 3, function stop counting
 {
-	unsigned int result = 0;
+	std::vector<unsigned int> oddVertices;
 
 	for (int i = 0; i < number_of_vertices; ++i) {
-		if (vertices[i].size() % 2 != 0) ++result;
-		if (result == 3) break;
+		if (vertices[i].size() % 2 != 0)
+			oddVertices.push_back(i);
 	}
 
-	return result;
+	return oddVertices;
 }
 
 void Graph::findWay()
 {
 	std::vector<unsigned int> euler;
 	unsigned int lengthOfEulerianCycle;
-	unsigned int oddVertices = countOddVertices(); // 0 - 0 odd; 2 - 2 odd, 3 - more than 2 odd
-	std::cout << "FIND WAY: oddVertices = " << oddVertices << std::endl;
+	std::vector<unsigned int> oddVertices = getOddVertices(); // 0 - 0 odd; 2 - 2 odd, 3 - more than 2 odd
+	std::cout << "FIND WAY: oddVertices = " << oddVertices.size() << std::endl;
 
-	/*std::cout << " GRAPH:" << std::endl;
+	std::cout << " GRAPH:" << std::endl;
 	for (int i = 0; i < number_of_vertices; ++i) {
 		for (int j = 0; j < vertices[i].size(); ++j) {
 			std::cout << "first: " << i << " neighbour: " << vertices[i][j].first << " length: " << vertices[i][j].second << std::endl;
 		}
-	}*/
+	}
 
-	if (oddVertices == 0) {
+	//done
+	if (oddVertices.size() == 0) {
 		std::cout << "FIND WAY: 0 odd" << std::endl;
 		lengthOfEulerianCycle = lengthOfAllEdges();
 		euler = findEulerianCycle();
-
 	}
-	else if (oddVertices == 2) {
+	//todo
+	else if (oddVertices.size() == 2) {
 		std::cout << "FIND WAY: 2 odd" << std::endl;
+		
+		makeEulerianGraph(oddVertices);
+		
+		//lengthOfEulerianCycle = lengthOfAllEdges();
+		//euler = findEulerianCycle();
+		return;
 	}
+	//todo
 	else {
 		std::cout << "FIND WAY: more than 2 odd" << std::endl;
+
+		return;
 	}
 
 
@@ -144,4 +154,93 @@ std::vector < std::vector<bool> > Graph::createVisitedVector() {
 	}
 
 	return visited;
+}
+
+void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
+
+	if(oddVertices.size() == 2)
+		addNewPath(oddVertices[0], oddVertices[1]);
+	else {
+		return;
+	}
+
+}
+
+void Graph::addNewPath(unsigned int v1, unsigned int v2) {
+	std::vector<unsigned int> shortestPath = findShortestPath(v1, v2);
+
+	std::cout << "ADD NEW PATH: shortest path: ";
+	for (int i = 0; i < shortestPath.size(); ++i)
+		std::cout << shortestPath[i] << " ";
+
+	std::cout << std::endl;
+}
+
+std::vector<unsigned int> Graph::findShortestPath(unsigned int v1, unsigned int v2) {
+	std::vector<int> prev = dijsktra(v1);
+	std::vector<unsigned int> path;
+
+	unsigned int vert = v2;
+	
+	while (prev[vert] != -1) {
+		path.push_back(vert);
+		vert = prev[vert];
+	}
+	path.push_back(v1);
+
+	return path;
+}
+
+std::vector<int> Graph::dijsktra(unsigned int start_vert) {
+	//const int MAX_INT = 2147483647;
+	std::vector<int> cost;
+	cost.resize(number_of_vertices);
+	std::vector<int> prev;
+	prev.resize(number_of_vertices);
+	std::vector<bool> NUset; // Not use/Use set:  0 for not use, 1 for use
+	NUset.resize(number_of_vertices);
+	unsigned int cheapVertice;
+	unsigned int number_of_neighbours;
+	unsigned int coord_of_neighbour;
+
+	for (unsigned int i = 0; i < number_of_vertices; ++i) {
+		cost[i] = INT_MAX;
+		prev[i] = -1;
+		NUset[i] = false;
+	}
+
+	cost[start_vert] = 0; // cost of get from start_vert to start_vert is 0. always
+
+	//we're finding paths
+	for (unsigned int i = 0; i < number_of_vertices; ++i) {
+		//we're finding index of the cheapest vertice
+		cheapVertice = findCheapVertice(cost, NUset);
+
+		NUset[cheapVertice] = true;
+		number_of_neighbours = vertices[cheapVertice].size();
+
+		//modify all of neighbours, which didn't used earlier
+		for (unsigned int i = 0; i < number_of_neighbours; ++i) {
+			coord_of_neighbour = vertices[cheapVertice][i].first;
+			if (NUset[coord_of_neighbour] == false && cost[coord_of_neighbour] > cost[cheapVertice] + vertices[cheapVertice][i].second) {
+				cost[coord_of_neighbour] = cost[cheapVertice] + vertices[cheapVertice][i].second;
+				prev[coord_of_neighbour] = cheapVertice;
+			}
+		}
+	}
+
+	return prev;
+}
+
+unsigned int Graph::findCheapVertice(std::vector<int>& cost, std::vector<bool>& NUset) {
+	int min = INT_MAX;
+	unsigned int min_index;
+
+	for (int v = 0; v < number_of_vertices; ++v)
+		if (NUset[v] == false && cost[v] <= min) {
+			min = cost[v];
+			min_index = v;
+		}
+
+	return min_index;
 }
