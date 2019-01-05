@@ -21,6 +21,7 @@ private:
 	std::vector<unsigned int> findShortestPath(unsigned int v1, unsigned int v2);
 	std::vector<int> dijsktra(unsigned int start_vert); //then not void type
 	unsigned int findCheapVertice(std::vector<int>& cost, std::vector<bool>& NUset); // is used in dijsktra algorithm
+	void showGraph();
 
 public:
 	Graph();

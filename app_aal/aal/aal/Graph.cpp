@@ -40,12 +40,7 @@ void Graph::findWay()
 	std::vector<unsigned int> oddVertices = getOddVertices(); // 0 - 0 odd; 2 - 2 odd, 3 - more than 2 odd
 	std::cout << "FIND WAY: oddVertices = " << oddVertices.size() << std::endl;
 
-	std::cout << " GRAPH:" << std::endl;
-	for (int i = 0; i < number_of_vertices; ++i) {
-		for (int j = 0; j < vertices[i].size(); ++j) {
-			std::cout << "first: " << i << " neighbour: " << vertices[i][j].first << " length: " << vertices[i][j].second << std::endl;
-		}
-	}
+	showGraph();
 
 	//done
 	if (oddVertices.size() == 0) {
@@ -53,15 +48,14 @@ void Graph::findWay()
 		lengthOfEulerianCycle = lengthOfAllEdges();
 		euler = findEulerianCycle();
 	}
-	//todo
+	//done
 	else if (oddVertices.size() == 2) {
 		std::cout << "FIND WAY: 2 odd" << std::endl;
 		
 		makeEulerianGraph(oddVertices);
-		
-		//lengthOfEulerianCycle = lengthOfAllEdges();
-		//euler = findEulerianCycle();
-		return;
+		//showGraph();
+		lengthOfEulerianCycle = lengthOfAllEdges();
+		euler = findEulerianCycle();
 	}
 	//todo
 	else {
@@ -92,21 +86,31 @@ unsigned int Graph::lengthOfAllEdges() {
 		for (unsigned int j = 0; j < number_of_neighbours; ++j) {
 			if (visited[i][j] == false) {// "delete" edge
 				visited[i][j] = true;
+				//std::cout << "change [i], [j]: " << i << " " << j << std::endl;
 				end_of_edge_coord = vertices[i][j].first; //get end of edge which is the coord in matrix in the next step
 
 				for (int k = 0; k < visited[end_of_edge_coord].size(); ++k) { //find coord in matrix with begin from the edge
-					if (vertices[end_of_edge_coord][k].first == i) {
+					if (visited[end_of_edge_coord][k] == false && vertices[end_of_edge_coord][k].first == i) {
 						begin_of_edge_coord = k;
 						break;
 					}
 				}
 
 				visited[end_of_edge_coord][begin_of_edge_coord] = true; //end "delete" edge
+				//std::cout << "change [i], [j]: " << end_of_edge_coord << " " << begin_of_edge_coord << std::endl;
 				length += vertices[i][j].second;						// add length of the edge to entire length
+
 			}
 		}
 	}
 	
+	/*std::cout << " VISITED:" << std::endl;
+	for (int i = 0; i < number_of_vertices; ++i) {
+		for (int j = 0; j < visited[i].size(); ++j) {
+			std::cout << "[i]: " << i << " [j] " << j << " bool: " << visited[i][j] << std::endl;
+		}
+	}*/
+
 	return length;
 }
 
@@ -129,7 +133,7 @@ void Graph::DFSEuler(unsigned int v, std::vector<unsigned int>& euler, std::vect
 			visited[v][i] = true;
 			end_of_edge_coord = vertices[v][i].first;
 			for (int k = 0; k < visited[end_of_edge_coord].size(); ++k) {
-				if (vertices[end_of_edge_coord][k].first == v) {
+				if (visited[end_of_edge_coord][k] == false && vertices[end_of_edge_coord][k].first == v) {
 					begin_of_edge_coord = k;
 					break;
 				}
@@ -168,10 +172,19 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 
 void Graph::addNewPath(unsigned int v1, unsigned int v2) {
 	std::vector<unsigned int> shortestPath = findShortestPath(v1, v2);
+	unsigned int length;
 
-	std::cout << "ADD NEW PATH: shortest path: ";
-	for (int i = 0; i < shortestPath.size(); ++i)
-		std::cout << shortestPath[i] << " ";
+	std::cout << "ADD NEW PATH: shortest path: " <<std::endl;
+	for (int i = 0; i < shortestPath.size() - 1; ++i) {
+		for (int j = 0; j < vertices[i].size(); ++j) {
+			if (vertices[shortestPath[i]][j].first == shortestPath[i + 1]) {
+				length = vertices[shortestPath[i]][j].second;
+				break;
+			}
+		}
+		std::cout << shortestPath[i] << " " << shortestPath[i+1] << " length: " << length << std::endl;
+		add(shortestPath[i], shortestPath[i + 1], length);
+	}
 
 	std::cout << std::endl;
 }
@@ -243,4 +256,13 @@ unsigned int Graph::findCheapVertice(std::vector<int>& cost, std::vector<bool>& 
 		}
 
 	return min_index;
+}
+
+void Graph::showGraph() {
+	std::cout << " GRAPH:" << std::endl;
+	for (int i = 0; i < number_of_vertices; ++i) {
+		for (int j = 0; j < vertices[i].size(); ++j) {
+			std::cout << "[i]: " << i << " [j] " << j << " first: " << i << " neighbour: " << vertices[i][j].first << " length: " << vertices[i][j].second << std::endl;
+		}
+	}
 }
