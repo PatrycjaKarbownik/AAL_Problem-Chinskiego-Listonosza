@@ -47,7 +47,7 @@ void read(Graph& graph, const char *nameOfFile) //then delete const
 
 int main(/*int argc, char **argv*/) {
 
-	const char *nameOfFile = "data/test3.txt"; //then I change it to read from args //delete const
+	const char *nameOfFile = "data/test6.txt"; //then I change it to read from args //delete const
 /*
 	if (argc != 2)
 	{
@@ -63,7 +63,7 @@ int main(/*int argc, char **argv*/) {
 	graph.findWay(); // here must be variable which will have way and length of way
 
 
-	//std::cout << "Hello world";
+	std::cout << std::endl << "Hello world";
 
 	int a;
 	std::cin >> a;

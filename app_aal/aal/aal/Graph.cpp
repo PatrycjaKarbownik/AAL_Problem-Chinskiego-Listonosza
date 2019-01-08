@@ -60,7 +60,10 @@ void Graph::findWay()
 	//todo
 	else {
 		std::cout << "FIND WAY: more than 2 odd" << std::endl;
-
+		makeEulerianGraph(oddVertices);
+		//showGraph();
+		//lengthOfEulerianCycle = lengthOfAllEdges();
+		//euler = findEulerianCycle();
 		return;
 	}
 
@@ -165,6 +168,24 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 	if(oddVertices.size() == 2)
 		addNewPath(oddVertices[0], oddVertices[1]);
 	else {
+		std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > shortestPaths;
+		shortestPaths = findShortestPaths(oddVertices);
+
+
+		std::cout << "MAKE EULERIAN GRAPH: the shortest paths:" << std::endl;
+
+		for (int i = 0; i < shortestPaths.size(); ++i) {
+			for (int j = 0; j < shortestPaths[i].size(); ++j) {
+				std::cout << "odd vertice: begin:" << oddVertices[i] << std::endl << "path: ";
+				for (int k = 0; k < shortestPaths[i][j].first.size(); ++k) {
+					std::cout << shortestPaths[i][j].first[k] << " ";
+				}
+				std::cout <<" length: " << shortestPaths[i][j].second << std::endl << std::endl;
+			}
+		}
+
+
+
 		return;
 	}
 
@@ -190,7 +211,8 @@ void Graph::addNewPath(unsigned int v1, unsigned int v2) {
 }
 
 std::vector<unsigned int> Graph::findShortestPath(unsigned int v1, unsigned int v2) {
-	std::vector<int> prev = dijsktra(v1);
+	std::pair <std::vector<int>, std::vector<int> > dijsktra_pair = dijsktra(v1);
+	std::vector<int> prev = dijsktra_pair.first;
 	std::vector<unsigned int> path;
 
 	unsigned int vert = v2;
@@ -204,7 +226,48 @@ std::vector<unsigned int> Graph::findShortestPath(unsigned int v1, unsigned int 
 	return path;
 }
 
-std::vector<int> Graph::dijsktra(unsigned int start_vert) {
+std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > Graph::findShortestPaths(std::vector<unsigned int> oddVertices) {
+	std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > result;
+	unsigned int number_of_odd_vertices = oddVertices.size();
+	std::vector< std::pair <std::vector<int>, std::vector<int> > > dijsktra_pairs;
+	std::vector<int> prev;
+	std::vector<int> cost;
+	
+	int length_of_path = 0;
+
+	for (int i = 0; i < number_of_odd_vertices; ++i) {
+		std::cout << "odd: " << oddVertices[i] << std::endl;
+		dijsktra_pairs.push_back(dijsktra(oddVertices[i]));
+	}
+
+	result.resize(number_of_odd_vertices);
+	for (int i = 0; i < number_of_odd_vertices; ++i) {
+		//result[i].resize(number_of_odd_vertices_less);
+		
+		prev = dijsktra_pairs[i].first;
+		cost = dijsktra_pairs[i].second;
+
+		for (int j = 0; j < number_of_odd_vertices; ++j) {
+			if (oddVertices[j] != oddVertices[i]) {
+				std::vector<unsigned int> path;
+				unsigned int vert = oddVertices[j];
+
+				while (prev[vert] != -1) {
+					path.push_back(vert);
+					vert = prev[vert];
+				}
+				path.push_back(oddVertices[i]);
+				length_of_path = cost[oddVertices[j]];
+
+				result[i].push_back(std::make_pair(path, length_of_path));
+			}
+		}
+	}
+
+	return result;
+}
+
+std::pair<std::vector<int>, std::vector<int> > Graph::dijsktra(unsigned int start_vert) {
 	//const int MAX_INT = 2147483647;
 	std::vector<int> cost;
 	cost.resize(number_of_vertices);
@@ -242,7 +305,7 @@ std::vector<int> Graph::dijsktra(unsigned int start_vert) {
 		}
 	}
 
-	return prev;
+	return std::make_pair(prev, cost);
 }
 
 unsigned int Graph::findCheapVertice(std::vector<int>& cost, std::vector<bool>& NUset) {

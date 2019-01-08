@@ -19,7 +19,8 @@ private:
 	void makeEulerianGraph(std::vector<unsigned int>& oddVertices); //graph isn't eulerian? we have to make it
 	void addNewPath(unsigned int v1, unsigned int v2); //add new path between two vertices which we set in arguments. is used, when graph has odd vertices
 	std::vector<unsigned int> findShortestPath(unsigned int v1, unsigned int v2);
-	std::vector<int> dijsktra(unsigned int start_vert); //then not void type
+	std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > findShortestPaths(std::vector<unsigned int> oddVertices);
+	std::pair<std::vector<int>, std::vector<int> > dijsktra(unsigned int start_vert); //then not void type
 	unsigned int findCheapVertice(std::vector<int>& cost, std::vector<bool>& NUset); // is used in dijsktra algorithm
 	void showGraph();
 
