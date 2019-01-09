@@ -21,6 +21,15 @@ void Graph::resize(unsigned int number_of_vertices, unsigned int number_of_edges
 	vertices.resize(number_of_vertices);
 }
 
+void Graph::showGraph() {
+	std::cout << " GRAPH:" << std::endl;
+	for (int i = 0; i < number_of_vertices; ++i) {
+		for (int j = 0; j < vertices[i].size(); ++j) {
+			std::cout << "[i]: " << i << " [j] " << j << " first: " << i << " neighbour: " << vertices[i][j].first << " length: " << vertices[i][j].second << std::endl;
+		}
+	}
+}
+
 std::vector<unsigned int> Graph::getOddVertices() //if number of odd vertices is more than 3, function stop counting
 {
 	std::vector<unsigned int> oddVertices;
@@ -168,8 +177,26 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 	if(oddVertices.size() == 2)
 		addNewPath(oddVertices[0], oddVertices[1]);
 	else {
-		std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > shortestPaths;
+		std::vector< std::vector< std::pair< std::vector<unsigned int>, int> > > shortestPaths;
+		std::vector< std::vector< std::pair<unsigned int, unsigned int> > > oddVerticesNeighbours;
 		shortestPaths = findShortestPaths(oddVertices);
+
+		unsigned int number_of_oddVertices = oddVertices.size();
+		oddVerticesNeighbours.resize(number_of_oddVertices);
+
+		for (unsigned int i = 0; i < number_of_oddVertices; ++i) {
+			for (unsigned int j = 0; j < shortestPaths[i].size(); ++j) {
+
+				oddVerticesNeighbours[i].push_back(std::make_pair(shortestPaths[i][j].first[0], shortestPaths[i][j].second));
+			}
+		}
+		
+		std::cout << "ODD GRAPH:" << std::endl;
+		for (int i = 0; i < number_of_oddVertices; ++i) {
+			for (int j = 0; j < oddVerticesNeighbours[i].size(); ++j) {
+				std::cout << "[i]: " << i << " [j] " << j << " first: " << oddVertices[i] << " neighbour: " << oddVerticesNeighbours[i][j].first << " length: " << oddVerticesNeighbours[i][j].second << std::endl;
+			}
+		}
 
 
 		std::cout << "MAKE EULERIAN GRAPH: the shortest paths:" << std::endl;
@@ -185,11 +212,43 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 		}
 
 
+		std::vector<bool> visited;
+		for (unsigned int i = 0; i < number_of_oddVertices; ++i)
+			visited.push_back(false);
+
+		std::vector<std::pair<unsigned int, unsigned int> > oddEdges;
+
+		DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, 0, INT_MAX, );//////////////////////////////////
 
 		return;
 	}
 
 }
+
+//////////////////////////////////////////////
+
+void Graph::DFSMinimalMatching(std::vector<unsigned int>& oddVertices, std::vector< std::vector< std::pair<unsigned int, unsigned int> > >& oddVerticesNeighbours,
+	std::vector<std::pair<unsigned int, unsigned int> >& oddEdges, std::vector<bool> visited,
+	int minimum, std::vector<std::pair<unsigned int, unsigned int> >& edges, unsigned int length_of_edges) {
+
+	unsigned int oddVerticesSize = oddVertices.size();
+	unsigned int visitedSize = 0, notVisitedSize = 0;
+	for (unsigned int i = 0; i < oddVerticesSize; ++i) {
+		if (visited[i] == false) ++notVisitedSize;
+		else ++visitedSize;
+	}
+
+	if (visitedSize == oddVerticesSize && length_of_edges < minimum) {
+		minimum = suma_po_krawedziach;
+		oddEdges = edges;
+	}
+
+
+
+}
+
+
+//////////////////////////////////////////////
 
 void Graph::addNewPath(unsigned int v1, unsigned int v2) {
 	std::vector<unsigned int> shortestPath = findShortestPath(v1, v2);
@@ -242,13 +301,12 @@ std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > Graph::fi
 
 	result.resize(number_of_odd_vertices);
 	for (int i = 0; i < number_of_odd_vertices; ++i) {
-		//result[i].resize(number_of_odd_vertices_less);
 		
 		prev = dijsktra_pairs[i].first;
 		cost = dijsktra_pairs[i].second;
 
 		for (int j = 0; j < number_of_odd_vertices; ++j) {
-			if (oddVertices[j] != oddVertices[i]) {
+			if (oddVertices[j] !=/*>*/ oddVertices[i]) {
 				std::vector<unsigned int> path;
 				unsigned int vert = oddVertices[j];
 
@@ -321,11 +379,4 @@ unsigned int Graph::findCheapVertice(std::vector<int>& cost, std::vector<bool>& 
 	return min_index;
 }
 
-void Graph::showGraph() {
-	std::cout << " GRAPH:" << std::endl;
-	for (int i = 0; i < number_of_vertices; ++i) {
-		for (int j = 0; j < vertices[i].size(); ++j) {
-			std::cout << "[i]: " << i << " [j] " << j << " first: " << i << " neighbour: " << vertices[i][j].first << " length: " << vertices[i][j].second << std::endl;
-		}
-	}
-}
+

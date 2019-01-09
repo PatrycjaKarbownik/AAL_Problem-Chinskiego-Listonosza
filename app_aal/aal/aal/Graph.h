@@ -11,6 +11,7 @@ private:
 	unsigned int number_of_vertices;
 	unsigned int number_of_edges; //number of edges
 
+	void showGraph();
 	std::vector<unsigned int> getOddVertices();
 	void DFSEuler(unsigned int v, std::vector<unsigned int>& euler, std::vector< std::vector<bool> >&visited);
 	std::vector<std::vector<bool>> createVisitedVector();
@@ -22,7 +23,10 @@ private:
 	std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > findShortestPaths(std::vector<unsigned int> oddVertices);
 	std::pair<std::vector<int>, std::vector<int> > dijsktra(unsigned int start_vert); //then not void type
 	unsigned int findCheapVertice(std::vector<int>& cost, std::vector<bool>& NUset); // is used in dijsktra algorithm
-	void showGraph();
+	void DFSMinimalMatching(std::vector<unsigned int>& oddVertices, std::vector< std::vector< std::pair<unsigned int, unsigned int> > >& oddVerticesNeighbours,
+		std::vector<std::pair<unsigned int, unsigned int> >& oddEdges, std::vector<bool> visited, unsigned int visitedVertices, int minimum, std::vector<std::pair<unsigned int, unsigned int> >& edges);
+
+
 
 public:
 	Graph();
