@@ -23,8 +23,9 @@ private:
 	std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > findShortestPaths(std::vector<unsigned int> oddVertices);
 	std::pair<std::vector<int>, std::vector<int> > dijsktra(unsigned int start_vert); //then not void type
 	unsigned int findCheapVertice(std::vector<int>& cost, std::vector<bool>& NUset); // is used in dijsktra algorithm
-	void DFSMinimalMatching(std::vector<unsigned int>& oddVertices, std::vector< std::vector< std::pair<unsigned int, unsigned int> > >& oddVerticesNeighbours,
-		std::vector<std::pair<unsigned int, unsigned int> >& oddEdges, std::vector<bool> visited, unsigned int visitedVertices, int minimum, std::vector<std::pair<unsigned int, unsigned int> >& edges);
+	void DFSMinimalMatching( // finding the minimal matching in graph, which has more than 2 odd vertices
+		std::vector<unsigned int>& oddVertices, std::vector< std::vector< std::pair<unsigned int, unsigned int> > >& oddVerticesNeighbours, std::vector<std::pair<unsigned int, unsigned int> >& oddEdges,
+		std::vector<bool> visited, int& minimum, std::vector<std::pair<unsigned int, unsigned int> > edges, unsigned int length_of_edges);
 
 
 

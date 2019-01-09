@@ -30,7 +30,7 @@ void Graph::showGraph() {
 	}
 }
 
-std::vector<unsigned int> Graph::getOddVertices() //if number of odd vertices is more than 3, function stop counting
+std::vector<unsigned int> Graph::getOddVertices()
 {
 	std::vector<unsigned int> oddVertices;
 
@@ -139,7 +139,7 @@ void Graph::DFSEuler(unsigned int v, std::vector<unsigned int>& euler, std::vect
 {
 	unsigned int end_of_edge_coord, begin_of_edge_coord;
 	unsigned int number_of_neighbours = visited[v].size();
-	for (unsigned int i = 0; i < number_of_neighbours; i++)          // we're reviewing vertices and their neighbours;
+	for (unsigned int i = 0; i < number_of_neighbours; i++)  // we're reviewing vertices and their neighbours;
 		while (!visited[v][i])
 		{							// "delete" edge
 			visited[v][i] = true;
@@ -154,7 +154,7 @@ void Graph::DFSEuler(unsigned int v, std::vector<unsigned int>& euler, std::vect
 			DFSEuler(vertices[v][i].first, euler, visited); //recursion
 		}
 
-	euler.push_back(v);                  // add vertice to eulerian cycle
+	euler.push_back(v);  // add vertice to eulerian cycle
 }
 
 std::vector < std::vector<bool> > Graph::createVisitedVector() {
@@ -191,16 +191,17 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 			}
 		}
 		
+		//writing
 		std::cout << "ODD GRAPH:" << std::endl;
 		for (int i = 0; i < number_of_oddVertices; ++i) {
 			for (int j = 0; j < oddVerticesNeighbours[i].size(); ++j) {
 				std::cout << "[i]: " << i << " [j] " << j << " first: " << oddVertices[i] << " neighbour: " << oddVerticesNeighbours[i][j].first << " length: " << oddVerticesNeighbours[i][j].second << std::endl;
 			}
 		}
+		//end writing
 
-
+		//writing
 		std::cout << "MAKE EULERIAN GRAPH: the shortest paths:" << std::endl;
-
 		for (int i = 0; i < shortestPaths.size(); ++i) {
 			for (int j = 0; j < shortestPaths[i].size(); ++j) {
 				std::cout << "odd vertice: begin:" << oddVertices[i] << std::endl << "path: ";
@@ -210,15 +211,16 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 				std::cout <<" length: " << shortestPaths[i][j].second << std::endl << std::endl;
 			}
 		}
-
+		//end writing
 
 		std::vector<bool> visited;
 		for (unsigned int i = 0; i < number_of_oddVertices; ++i)
 			visited.push_back(false);
 
-		std::vector<std::pair<unsigned int, unsigned int> > oddEdges;
+		std::vector<std::pair<unsigned int, unsigned int> > oddEdges, edges;
+		int minimum = INT_MAX;
 
-		DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, 0, INT_MAX, );//////////////////////////////////
+		DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, 0);//////////////////////////////////
 
 		return;
 	}
@@ -227,24 +229,52 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 
 //////////////////////////////////////////////
 
-void Graph::DFSMinimalMatching(std::vector<unsigned int>& oddVertices, std::vector< std::vector< std::pair<unsigned int, unsigned int> > >& oddVerticesNeighbours,
-	std::vector<std::pair<unsigned int, unsigned int> >& oddEdges, std::vector<bool> visited,
-	int minimum, std::vector<std::pair<unsigned int, unsigned int> >& edges, unsigned int length_of_edges) {
-
+void Graph::DFSMinimalMatching(//1st line - variables which will use to get data of vertices and set edges; 2nd - 
+	std::vector<unsigned int>& oddVertices, std::vector< std::vector< std::pair<unsigned int, unsigned int> > >& oddVerticesNeighbours, std::vector<std::pair<unsigned int, unsigned int> >& oddEdges,
+	std::vector<bool> visited, int& minimum, std::vector<std::pair<unsigned int, unsigned int> > edges, unsigned int length_of_edges)
+{
 	unsigned int oddVerticesSize = oddVertices.size();
 	unsigned int visitedSize = 0, notVisitedSize = 0;
-	for (unsigned int i = 0; i < oddVerticesSize; ++i) {
-		if (visited[i] == false) ++notVisitedSize;
+	unsigned int number_of_neighbours;
+	unsigned int first_not_visited_vertice;
+
+	for (unsigned int i = oddVerticesSize - 1; i >= 0; --i) {
+		if (visited[i] == false) {
+			++notVisitedSize;
+			first_not_visited_vertice = i;
+		}
 		else ++visitedSize;
 	}
 
 	if (visitedSize == oddVerticesSize && length_of_edges < minimum) {
-		minimum = suma_po_krawedziach;
+		minimum = length_of_edges;
 		oddEdges = edges;
 	}
 
+	int i = 0;
+	unsigned int index_of_vertice = first_not_visited_vertice;
+	unsigned int index_of_neighbour;
+	while(i < notVisitedSize) {
+		while (visited[index_of_vertice] != false)
+			++index_of_vertice;
+		
+		number_of_neighbours = oddVerticesNeighbours[index_of_vertice].size();
+		for (int j = 0; j < number_of_neighbours; ++j){
+			index_of_neighbour = 0;
+			while (oddVertices[index_of_neighbour] != oddVerticesNeighbours[index_of_vertice][j].first)
+				++index_of_neighbour;
+	
+			if (visited[index_of_neighbour] == false) {//nieodwiedzone[i][j] nie jest na liscie odwiedzone)
+				visited[index_of_vertice] = true;
+				visited[index_of_neighbour] = true;
+				edges.push_back(std::make_pair(oddVertices[index_of_vertice], oddVertices[index_of_neighbour]));
+				length_of_edges += oddVerticesNeighbours[index_of_vertice][j].second;
 
-
+				DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, length_of_edges);
+			}
+		}
+		++i;
+	}
 }
 
 
@@ -326,7 +356,6 @@ std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > Graph::fi
 }
 
 std::pair<std::vector<int>, std::vector<int> > Graph::dijsktra(unsigned int start_vert) {
-	//const int MAX_INT = 2147483647;
 	std::vector<int> cost;
 	cost.resize(number_of_vertices);
 	std::vector<int> prev;
