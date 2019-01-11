@@ -9,7 +9,7 @@ class Graph
 private:
 	std::vector<std::vector <std::pair <unsigned int, unsigned int> > > vertices;
 	unsigned int number_of_vertices;
-	unsigned int number_of_edges; //number of edges
+	unsigned int number_of_edges;
 
 	void showGraph();
 	std::vector<unsigned int> getOddVertices();

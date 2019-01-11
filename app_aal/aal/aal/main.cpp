@@ -47,7 +47,7 @@ void read(Graph& graph, const char *nameOfFile) //then delete const
 
 int main(/*int argc, char **argv*/) {
 
-	const char *nameOfFile = "data\\test5.txt";//"aal/aal/data/test7.txt"; //then I change it to read from args //delete const
+	const char *nameOfFile = "data\\test3.txt";//"aal/aal/data/test7.txt"; //then I change it to read from args //delete const
 /*
 	if (argc != 2)
 	{

@@ -230,6 +230,29 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 		} //end writing
 
 
+
+		/*
+		unsigned int begin, end, length;
+
+		std::cout << "ADD ODD EDGES:" << std::endl;
+		for (unsigned int i = 0; i < oddEdges.size(); ++i) { //oddEdges - pair<begin, end>
+			for (int k = 0; k < shortestPaths[oddEdges[i].first][oddEdges[i].second].first.size(); ++k) { 
+				begin = shortestPaths[oddEdges[i].first][oddEdges[i].second].first[k];
+				end = shortestPaths[oddEdges[i].first][oddEdges[i].second].first[k + 1];
+				
+				for(int j = 0; j < vertices[begin].size(); ++j) {
+					if (vertices[begin][j].first == end) {
+						length = vertices[begin][j].second;
+						break;
+					}
+				}
+
+				std::cout << "begin " << begin << " end " << end << " length " << length << std::endl;
+				add(begin, end, length);
+			}
+		}
+		*/
+		
 		return;
 	}
 
