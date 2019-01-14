@@ -12,7 +12,7 @@ class Generator
 private:
 	unsigned int myRandom(unsigned int mod);
 	std::vector<unsigned int> beginningOfGenerateGraph(Graph& graph, unsigned int number_of_vertices, unsigned int number_of_edges, unsigned int& addedEdges);
-		//it's used in every generate method on the beginning. It shuffles elements in vector and connects the next two in pairs (creates edges)
+		//it's used in every generate method at the beginning. It shuffles elements in vector and connects the next two in pairs (creates edges)
 	void addRemainingEdges(Graph& graph, unsigned int number_of_edges); //is used in methods, when we have to add more edges - the last step
 		//(los 3 vertices and connect them / los 2 vertices, create and double edge / los 1 vertice and create loop)
 

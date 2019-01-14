@@ -1,7 +1,5 @@
 #include "Generator.h"
 
-
-
 Generator::Generator()
 {
 	std::srand(unsigned(std::time(0)));
@@ -23,7 +21,7 @@ Graph Generator::eulerianGraph(Graph& graph, unsigned int number_of_vertices, un
 	unsigned int mod = 4 * (number_of_edges / 5) + 1;
 	unsigned int length;
 	length = myRandom(mod) + 7;
-	graph.add(vertices[number_of_vertices-1], vertices[0], length);
+	graph.add(vertices[number_of_vertices-1], vertices[0], length); //connecting first and last vertice in shuffled vector
 	++addedEdges;
 
 	if(addedEdges < number_of_edges)
@@ -46,7 +44,7 @@ Graph Generator::graphWith2OddVertices(Graph& graph, unsigned int number_of_vert
 		if (losOdd != 0) losOdd = number_of_vertices - 1;
 
 		length = myRandom(mod) + 7;
-		graph.add(vertices[losEven], vertices[losOdd], length);
+		graph.add(vertices[losEven], vertices[losOdd], length); //connecting one of odd vertices with one of even vertices
 	
 		++addedEdges;
 
@@ -54,34 +52,20 @@ Graph Generator::graphWith2OddVertices(Graph& graph, unsigned int number_of_vert
 			addRemainingEdges(graph, number_of_edges - addedEdges);
 	}
 
+
 	return graph;
 }
 
-Graph Generator::graphWithMoreThan2OddVertices(Graph & graph, unsigned int number_of_vertices, unsigned int number_of_edges, unsigned int number_of_odd_vertices)
-{
+Graph Generator::graphWithMoreThan2OddVertices(Graph & graph, unsigned int number_of_vertices, unsigned int number_of_edges, unsigned int number_of_odd_vertices) {
 	unsigned int addedEdges = 0;
 	std::vector<unsigned int> vertices = beginningOfGenerateGraph(graph, number_of_vertices, number_of_edges, addedEdges);
 	std::vector<unsigned int> oddVertices = graph.getOddVertices();
 	std::vector<unsigned int> evenVertices = graph.getEvenVertices();
 	unsigned int mod = 6 * (number_of_edges / 9) + 1;
-	unsigned int length;
-	unsigned int first, second, firstCoord, secondCoord;
+	unsigned int length, first, second, firstCoord, secondCoord;
 	bool firstBool, secondBool;
 
-	while (oddVertices.size() != number_of_odd_vertices) {
-		std::cout << "GENERATOR: oddVertices.size() = " << oddVertices.size() << std::endl;
-		//writing
-		std::cout << "GENERATOR: odd Vertices:" << std::endl;
-		for (int i = 0; i < oddVertices.size(); ++i)
-			std::cout << oddVertices[i] << " ";
-
-		std::cout << std::endl << "GENERATOR: even Vertices:" << std::endl;
-		for (int i = 0; i < evenVertices.size(); ++i)
-			std::cout << evenVertices[i] << " ";
-
-		std::cout << std::endl;
-		//end writing
-
+	while (oddVertices.size() != number_of_odd_vertices) { //connecting two even vertices makes one edge and changes them to odd vertices
 		std::random_shuffle(evenVertices.begin(), evenVertices.end());
 		length = myRandom(mod) + 4;
 		first = evenVertices[0];
@@ -89,7 +73,7 @@ Graph Generator::graphWithMoreThan2OddVertices(Graph & graph, unsigned int numbe
 		firstBool = false;
 		secondBool = false;
 
-		for (int i = 0; i < vertices.size(); ++i) {
+		for (int i = 0; i < vertices.size(); ++i) { //finding coords of the vertices in vector, which is "shuffled", i.g.: 3, 5, 1, 0, 2, 4
 			if (vertices[i] == first) {
 				firstCoord = i;
 				firstBool = true;
@@ -109,28 +93,27 @@ Graph Generator::graphWithMoreThan2OddVertices(Graph & graph, unsigned int numbe
 		oddVertices.push_back(second);
 		evenVertices.erase(evenVertices.begin()); //erasing two even connected with each other vertices from evenVertices
 		evenVertices.erase(evenVertices.begin());
-
 	}
 
 	if (addedEdges < number_of_edges)
 		addRemainingEdges(graph, number_of_edges - addedEdges);
 
-
 	return graph;
 }
 
 std::vector<unsigned int> Generator::beginningOfGenerateGraph(Graph& graph, unsigned int number_of_vertices, unsigned int number_of_edges, unsigned int& addedEdges) {
+	//it's used in every generate method at the beginning. It shuffles elements in vector and connects the next two in pairs (creates edges)
 	std::vector<unsigned int> vertices;
 	unsigned int mod = 3 * (number_of_edges / 4) + 1;
 
-	graph.resize(number_of_vertices, number_of_edges);
+	graph.resize(number_of_vertices/*, number_of_edges*/);
 
 	for (unsigned int i = 0; i < number_of_vertices; ++i)
 		vertices.push_back(i);
 
 	std::random_shuffle(vertices.begin(), vertices.end());
 
-	//WRITING vertices shuffle
+	//WRITING vertices shuffle. It helps in analysis of propriety
 	for (std::vector<unsigned int>::iterator it = vertices.begin(); it != vertices.end(); ++it)
 		std::cout << *it << " ";
 
@@ -145,30 +128,24 @@ std::vector<unsigned int> Generator::beginningOfGenerateGraph(Graph& graph, unsi
 }
 
 void Generator::addRemainingEdges(Graph& graph, unsigned int number_of_edges) {
-	unsigned int rest;
+	//is used in methods, when we have to add more edges - the last step (randomizing 3 vertices and connecting them / randomizing 2 vertices, creating and double edge / randomizing 1 vertice and creating loop)
+	unsigned int rest = number_of_edges % 3;
 	unsigned int mod = 4 * (number_of_edges / 3) + 1;
 
-	std::cout << "addRemainingEdges" << std::endl;
-	
-	rest = number_of_edges % 3;
-	if (rest == 1) {
-		std::cout << "loop ";
+	if (rest == 1) { //creating loop
 		unsigned int length = myRandom(mod) + 9;
 		unsigned int vertice = myRandom(graph.getNumberOfVertices());
-		std::cout << vertice << std::endl;//
 		graph.add(vertice, vertice, length);
 
 		number_of_edges -= 1;
 	}
-	else if (rest == 2) {
-		std::cout << "double ";
+	else if (rest == 2) { //creating double edge
 		unsigned int vertice1 = myRandom(graph.getNumberOfVertices());
 		unsigned int vertice2 = myRandom(graph.getNumberOfVertices());
 		unsigned int length = myRandom(mod) + 3;
 		while (vertice2 == vertice1)
 			vertice2 = myRandom(graph.getNumberOfVertices());
 
-		std::cout << vertice1 << " " << vertice2 << std::endl;//
 		graph.add(vertice1, vertice2, length);
 		length = myRandom(mod) + 2;
 		graph.add(vertice1, vertice2, length);
@@ -178,9 +155,7 @@ void Generator::addRemainingEdges(Graph& graph, unsigned int number_of_edges) {
 
 	rest = number_of_edges % 3;
 	if (rest == 0) {
-		while (number_of_edges > 0) {
-			std::cout << "triangle";
-
+		while (number_of_edges > 0) { //creating 3 edges between 3 random vertices
 			unsigned int vertice1 = myRandom(graph.getNumberOfVertices());
 			unsigned int vertice2 = myRandom(graph.getNumberOfVertices());
 			unsigned int vertice3 = myRandom(graph.getNumberOfVertices());
@@ -189,8 +164,6 @@ void Generator::addRemainingEdges(Graph& graph, unsigned int number_of_edges) {
 				vertice2 = myRandom(graph.getNumberOfVertices());
 			while (vertice3 == vertice1 || vertice3 == vertice2)
 				vertice3 = myRandom(graph.getNumberOfVertices());
-
-			std::cout << vertice1 << " " << vertice2 << " " << vertice3 << std::endl;//
 
 			graph.add(vertice1, vertice2, length);
 			length = myRandom(mod) + 7;

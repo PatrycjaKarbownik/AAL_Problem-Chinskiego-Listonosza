@@ -14,9 +14,9 @@ void Graph::add(unsigned int first, unsigned int second, unsigned int length)
 	vertices[second].push_back(std::make_pair(first, length));
 }
 
-void Graph::resize(unsigned int number_of_vertices, unsigned int number_of_edges)
+void Graph::resize(unsigned int number_of_vertices/*, unsigned int number_of_edges*/)
 {
-	this->number_of_edges = number_of_edges;
+	//this->number_of_edges = number_of_edges;
 	this->number_of_vertices = number_of_vertices;
 	vertices.resize(number_of_vertices);
 }
@@ -205,9 +205,8 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 			visited.push_back(false);
 		std::vector<std::pair<unsigned int, unsigned int> > oddEdges, edges;
 		int minimum = INT_MAX;
-		int licznik = 0;
 
-		DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, 0, licznik);
+		DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, 0);
 
 		//writing
 		std::cout << std::endl << "ODD EDGES:" << std::endl;
@@ -377,43 +376,23 @@ unsigned int Graph::findCheapVertice(std::vector<int>& cost, std::vector<bool>& 
 	return min_index;
 }
 
-void Graph::DFSMinimalMatching(//1st line - variables which will use to get data of vertices and set edges; USUNAC LICZNIK! DODAC KOMENTARZE
+void Graph::DFSMinimalMatching(//1st line - variables which will use to get data of vertices and set edges
 	std::vector<unsigned int>& oddVertices, std::vector< std::vector< std::pair<unsigned int, unsigned int> > >& oddVerticesNeighbours, std::vector<std::pair<unsigned int, unsigned int> >& oddEdges,
-	std::vector<bool> visited, int& minimum, std::vector<std::pair<unsigned int, unsigned int> > edges, unsigned int length_of_edges, int& licznik)
+	std::vector<bool> visited, int& minimum, std::vector<std::pair<unsigned int, unsigned int> > edges, unsigned int length_of_edges)
 {
-	unsigned int oddVerticesSize = oddVertices.size();
-	unsigned int visitedSize = 0, notVisitedSize = 0;
-	unsigned int number_of_neighbours;
-	unsigned int first_not_visited_vertice;
+	unsigned int oddVerticesSize = oddVertices.size(), visitedSize = 0, notVisitedSize = 0;
+	unsigned int number_of_neighbours, first_not_visited_vertice;
 
 	for (int i = oddVerticesSize - 1; i >= 0; i--) {
-		//std::cout << "DFSminimal: i = " << i << std::endl;
 		if (visited[i] == false) {
-			//std::cout << "DFSminimal FALSE: i = " << i << std::endl;
 			++notVisitedSize;
 			first_not_visited_vertice = i;
 		}
-		else {
-			//std::cout << "DFSminimal TRUE: i = " << i << std::endl;
-			++visitedSize;
-		}
+		else ++visitedSize;
 	}
 
-	/*std::cout << "DFSminimal: juz za" << std::endl;
-	std::cout << "Not Visited Size = " << notVisitedSize << std::endl;
-	std::cout << "Visited Size = " << visitedSize << std::endl;
-	std::cout << "Odd Vertices Size = " << oddVerticesSize << std::endl;*/
-
-	/*//writing
-	std::cout << std::endl << "EDGES:" << std::endl;
-	std::cout << "LICZNIK = " << licznik << std::endl;
-	for (unsigned int i = 0; i < edges.size(); ++i) {
-		std::cout << "first: " << edges[i].first << " second: " << edges[i].second << std::endl;
-	} //end writing */
-
-	if (visitedSize == oddVerticesSize) {
-		++licznik;
-		if (length_of_edges < minimum) {
+	if (visitedSize == oddVerticesSize) { //checking if method came to the end of branch
+		if (length_of_edges < minimum) { //updating minimum length of edges
 			std::cout << "minimum = " << minimum << " length_of_edges = " << length_of_edges << std::endl;
 			minimum = length_of_edges;
 			oddEdges = edges;
@@ -424,47 +403,28 @@ void Graph::DFSMinimalMatching(//1st line - variables which will use to get data
 	int i = 0;
 	unsigned int index_of_vertice = first_not_visited_vertice;
 	unsigned int index_of_neighbour;
-//	std::cout << "while i < notVisitedSize:  i = " << i << " notVisitedSize = " << notVisitedSize << std::endl;
-	while (visited[index_of_vertice] != false) {
-	//	std::cout << "finding index of not visited vertice: " << index_of_vertice << std::endl;
-		++index_of_vertice;
-	}
-	//std::cout << "finding index of not visited vertice FINISH: " << index_of_vertice << std::endl;
 		
 	number_of_neighbours = oddVerticesNeighbours[index_of_vertice].size();
-	//std::cout << "number_of_neighbours = " << number_of_neighbours << std::endl;
-	for (int j = 0; j < number_of_neighbours; ++j){
+	for (int j = 0; j < number_of_neighbours; ++j){ //combinating first not visited vertice with its not visited neighbours
 		index_of_neighbour = 0;
-		while (oddVertices[index_of_neighbour] != oddVerticesNeighbours[index_of_vertice][j].first) {
-			//std::cout << "finding index of not visited neighbour: " << index_of_neighbour << std::endl;
+		while (oddVertices[index_of_neighbour] != oddVerticesNeighbours[index_of_vertice][j].first) { //finding index of neighbour
 			++index_of_neighbour;
 		}
-		//std::cout << "finding index of not visited neighbour FINISH: " << index_of_neighbour << std::endl;
-
-
-
-		/*for (int i = oddVerticesSize - 1; i >= 0; i--) {
-			std::cout << "DFSminimal: i = " << i << std::endl;
-			if (visited[i] == false) {std::cout << "DFSminimal FALSE: i = " << i << std::endl;}
-			else {std::cout << "DFSminimal TRUE: i = " << i << std::endl;}
-		}*/
-
-
 	
-		if (visited[index_of_neighbour] == false) {//nieodwiedzone[i][j] nie jest na liscie odwiedzone)
+		if (visited[index_of_neighbour] == false) {
 			visited[index_of_vertice] = true;
 			visited[index_of_neighbour] = true;
-			//std::cout << "NEW EDGE: " << oddVertices[index_of_vertice] << "  " << oddVertices[index_of_neighbour] << "  length: " << oddVerticesNeighbours[index_of_vertice][j].second << std::endl;
-			edges.push_back(std::make_pair(oddVertices[index_of_vertice], oddVertices[index_of_neighbour]));
+			edges.push_back(std::make_pair(oddVertices[index_of_vertice], oddVertices[index_of_neighbour])); //create new edge on analyse path
 			length_of_edges += oddVerticesNeighbours[index_of_vertice][j].second;
-			//std::cout << "length of edges = " << length_of_edges << std::endl;
 
-			DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, length_of_edges, licznik);
+			DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, length_of_edges); //recursion
+
+			//fixing changes in order that the next loops can be correct (without changes in recursion)
 			visited[index_of_neighbour] = false;
 			length_of_edges -= oddVerticesNeighbours[index_of_vertice][j].second;
 			edges.pop_back();
 		}
 	}
-	visited[index_of_vertice] = false;
+	visited[index_of_vertice] = false; //the next loop requires updating this vertice, because in this method will be find a new path with other combination
 	++index_of_vertice;
 }

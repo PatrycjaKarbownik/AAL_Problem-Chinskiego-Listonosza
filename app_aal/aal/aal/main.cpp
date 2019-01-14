@@ -9,10 +9,10 @@
 void read(Graph& graph, const char *nameOfFile) //then delete const
 {
 	std::fstream file;
-
 	file.open(nameOfFile, std::ios::in);
 
 	unsigned int first, second, length;
+	unsigned int number_of_edges, number_of_vert;
 	std::vector<unsigned int> first_vect, second_vect, length_vect;
 
 	while (file >> first >> second >> length)
@@ -22,22 +22,16 @@ void read(Graph& graph, const char *nameOfFile) //then delete const
 		length_vect.push_back(length);
 	}
 
-	/*if (!(first_vect.size() == second_vect.size() && first_vect.size() == length_vect.size())) {
-		throw std::exception("size of vectors aren't equal");
-		std::cout << "size of vectors aren't equal" << std::endl;
-	}*/
+	number_of_edges = first_vect.size();
 
-	unsigned int number_of_edges = first_vect.size();
-
-	unsigned int number_of_vert = 0;
+	number_of_vert = 0;
 	for (unsigned int i = 0; i < number_of_edges; ++i) {
 		if (number_of_vert < first_vect[i]) number_of_vert = first_vect[i];
 		if (number_of_vert < second_vect[i]) number_of_vert = second_vect[i];
 	}
 	++number_of_vert;
-	//std::cout << "number of vertices " << number_of_vert << std::endl;
 
-	graph.resize(number_of_vert, number_of_edges);
+	graph.resize(number_of_vert);
 	   
 	for(unsigned int i = 0; i < number_of_edges; ++i)
 		graph.add(first_vect[i], second_vect[i], length_vect[i]);
@@ -72,17 +66,18 @@ int main(/*int argc, char **argv*/) {
 
 	// (1)
 	//read from file. I have to edit this
-	/*
-	const char *nameOfFile = "data\\test5.txt";//"aal/aal/data/test7.txt"; //then I change it to read from args //delete const
+	
+	const char *nameOfFile = "data\\test8.txt";//"aal/aal/data/test7.txt"; //then I change it to read from args //delete const
 	read(graph, nameOfFile);
 	graph.showGraph();
-	*/
+	
 
 
 	//(2)
 	//generator
 	// -eulerian
-	/*unsigned int number_of_vertices, number_of_edges;
+	/*
+	unsigned int number_of_vertices, number_of_edges;
 	Generator generator;
 	while (true) {
 		std::cout << "Set number of vertices and edges in new graph (with eulerian cycle at the beginning) (number of edges >= number of vertices)" << std::endl;
@@ -99,7 +94,8 @@ int main(/*int argc, char **argv*/) {
 		else break;
 	}
 	generator.eulerianGraph(graph, number_of_vertices, number_of_edges);
-	graph.showGraph();*/
+	graph.showGraph();
+	*/
 
 	// -2odd
 	/*
@@ -125,6 +121,7 @@ int main(/*int argc, char **argv*/) {
 
 
 	// -moreodd
+	/*
 	unsigned int number_of_vertices, number_of_edges, number_of_odd_vertices;
 	Generator generator;
 	while (true) {
@@ -157,7 +154,9 @@ int main(/*int argc, char **argv*/) {
 	std::cout << "vert = " << number_of_vertices << " edges = " << number_of_edges << " odd vert = " << number_of_odd_vertices << std::endl;
 	generator.graphWithMoreThan2OddVertices(graph, number_of_vertices, number_of_edges, number_of_odd_vertices);
 	graph.showGraph();
-	
+	*/
+
+
 	//writing information out of eulerian cycle
 	write(graph.findWay());
 
