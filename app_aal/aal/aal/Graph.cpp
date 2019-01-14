@@ -42,33 +42,50 @@ std::vector<unsigned int> Graph::getOddVertices()
 	return oddVertices;
 }
 
+std::vector<unsigned int> Graph::getEvenVertices()
+{
+	std::vector<unsigned int> evenVertices;
+
+	for (int i = 0; i < number_of_vertices; ++i) {
+		if (vertices[i].size() % 2 != 1)
+			evenVertices.push_back(i);
+	}
+
+	return evenVertices;
+}
+
+std::vector < std::vector<bool> > Graph::createVisitedVector() {
+	std::vector< std::vector<bool> >visited;
+	visited.resize(number_of_vertices);
+	unsigned int number_of_neighbours;
+
+	for (unsigned int i = 0; i < number_of_vertices; ++i) {
+		number_of_neighbours = vertices[i].size();
+		for (unsigned int j = 0; j < number_of_neighbours; ++j) {
+			visited[i].push_back(false);
+		}
+	}
+
+	return visited;
+}
+
 std::pair<std::vector<unsigned int>, unsigned int> Graph::findWay()
 {
 	std::pair<std::vector<unsigned int>, unsigned int> result;
 	std::vector<unsigned int> euler;
 	unsigned int lengthOfEulerianCycle;
-	std::vector<unsigned int> oddVertices = getOddVertices(); // 0 - 0 odd; 2 - 2 odd, 3 - more than 2 odd
+	std::vector<unsigned int> oddVertices = getOddVertices();
 	std::cout << "FIND WAY: oddVertices = " << oddVertices.size() << std::endl;
 
-	showGraph();
-
-	if (oddVertices.size() == 0) {
+	if (oddVertices.size() == 0) { //eulerian graph
 		std::cout << "FIND WAY: 0 odd" << std::endl;
 		lengthOfEulerianCycle = lengthOfAllEdges();
 		euler = findEulerianCycle();
 	}
-	else if (oddVertices.size() == 2) {
-		std::cout << "FIND WAY: 2 odd" << std::endl;
-		
+	
+	else { //2 or more odd vertices
 		makeEulerianGraph(oddVertices);
-		//showGraph();
-		lengthOfEulerianCycle = lengthOfAllEdges();
-		euler = findEulerianCycle();
-	}
-	else {
-		std::cout << "FIND WAY: more than 2 odd" << std::endl;
-		makeEulerianGraph(oddVertices);
-		//showGraph();
+		  showGraph();
 		lengthOfEulerianCycle = lengthOfAllEdges();
 		euler = findEulerianCycle();
 	}
@@ -76,14 +93,6 @@ std::pair<std::vector<unsigned int>, unsigned int> Graph::findWay()
 	result = std::make_pair(euler, lengthOfEulerianCycle);
 
 	return result;
-
-	//writing information out will be in main function
-	std::cout << "FIND WAY: length of eulerian cycle " << lengthOfEulerianCycle << std::endl;
-
-	unsigned int eulerSize = euler.size();
-	std::cout << "FIND WAY: cycle: ";
-	for (unsigned int i = 0; i < eulerSize; ++i)
-		std::cout << euler[i] << " ";
 }
 
 unsigned int Graph::lengthOfAllEdges() {
@@ -97,7 +106,6 @@ unsigned int Graph::lengthOfAllEdges() {
 		for (unsigned int j = 0; j < number_of_neighbours; ++j) {
 			if (visited[i][j] == false) {// "delete" edge
 				visited[i][j] = true;
-				//std::cout << "change [i], [j]: " << i << " " << j << std::endl;
 				end_of_edge_coord = vertices[i][j].first; //get end of edge which is the coord in matrix in the next step
 
 				for (int k = 0; k < visited[end_of_edge_coord].size(); ++k) { //find coord in matrix with begin from the edge
@@ -108,20 +116,11 @@ unsigned int Graph::lengthOfAllEdges() {
 				}
 
 				visited[end_of_edge_coord][begin_of_edge_coord] = true; //end "delete" edge
-				//std::cout << "change [i], [j]: " << end_of_edge_coord << " " << begin_of_edge_coord << std::endl;
 				length += vertices[i][j].second;						// add length of the edge to entire length
-
 			}
 		}
 	}
 	
-	/*std::cout << " VISITED:" << std::endl;
-	for (int i = 0; i < number_of_vertices; ++i) {
-		for (int j = 0; j < visited[i].size(); ++j) {
-			std::cout << "[i]: " << i << " [j] " << j << " bool: " << visited[i][j] << std::endl;
-		}
-	}*/
-
 	return length;
 }
 
@@ -156,26 +155,14 @@ void Graph::DFSEuler(unsigned int v, std::vector<unsigned int>& euler, std::vect
 	euler.push_back(v);  // add vertice to eulerian cycle
 }
 
-std::vector < std::vector<bool> > Graph::createVisitedVector() {
-	std::vector< std::vector<bool> >visited;
-	visited.resize(number_of_vertices);
-	unsigned int number_of_neighbours;
-
-	for (unsigned int i = 0; i < number_of_vertices; ++i) {
-		number_of_neighbours = vertices[i].size();
-		for (unsigned int j = 0; j < number_of_neighbours; ++j) {
-			visited[i].push_back(false);
-		}
-	}
-
-	return visited;
-}
-
+// POPRAWIC, MOZE PODZIELIC NA WIECEJ METOD
 void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
-
-	if(oddVertices.size() == 2)
+	if (oddVertices.size() == 2) { // 2 odd vertices
+		std::cout << "MAKE EUL GRAPH: 2 odd" << std::endl;
 		addNewPath(oddVertices[0], oddVertices[1]);
-	else {
+	}
+	else { // more than 2 odd vertices
+		std::cout << "MAKE EUL GRAPH: more than 2 odd" << std::endl;
 		std::vector< std::vector< std::pair< std::vector<unsigned int>, int> > > shortestPaths;
 		std::vector< std::vector< std::pair<unsigned int, unsigned int> > > oddVerticesNeighbours;
 		shortestPaths = findShortestPaths(oddVertices);
@@ -183,7 +170,7 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 		unsigned int number_of_oddVertices = oddVertices.size();
 		oddVerticesNeighbours.resize(number_of_oddVertices);
 
-		for (unsigned int i = 0; i < number_of_oddVertices; ++i) {
+		for (unsigned int i = 0; i < number_of_oddVertices; ++i) { // creating new vector with neighbours of odd vertices
 			for (unsigned int j = 0; j < shortestPaths[i].size(); ++j) {
 
 				oddVerticesNeighbours[i].push_back(std::make_pair(shortestPaths[i][j].first[0], shortestPaths[i][j].second));
@@ -212,15 +199,15 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 		}
 		//end writing
 
+		//preparing variables to DFSMinimalMatching method
 		std::vector<bool> visited;
 		for (unsigned int i = 0; i < number_of_oddVertices; ++i)
 			visited.push_back(false);
-
 		std::vector<std::pair<unsigned int, unsigned int> > oddEdges, edges;
 		int minimum = INT_MAX;
 		int licznik = 0;
 
-		DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, 0, licznik);//////////////////////////////////
+		DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, 0, licznik);
 
 		//writing
 		std::cout << std::endl << "ODD EDGES:" << std::endl;
@@ -228,11 +215,9 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 			std::cout << "first: " << oddEdges[i].first << " second: " << oddEdges[i].second << std::endl;
 		} //end writing
 
+		unsigned int begin, end, length, firstIndex, secondIndex; //variables which will use to add new edges
 
-
-		
-		unsigned int begin, end, length, firstIndex, secondIndex;
-
+		//adding new edges (graph have to be eulerian)
 		std::cout << "ADD ODD EDGES:" << std::endl;
 		for (unsigned int i = 0; i < oddEdges.size(); ++i) { //oddEdges - pair<begin, end>
 			for (int j = 0; j < shortestPaths.size(); ++j) {
@@ -262,30 +247,19 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 				std::cout << "begin " << begin << " end " << end << " length " << length << std::endl;
 				add(begin, end, length);
 			}
-		}
-		
-		
-		return;
+		}	
+		//return;
 	}
-
 }
-
 
 void Graph::addNewPath(unsigned int v1, unsigned int v2) {
 	std::vector<unsigned int> shortestPath = findShortestPath(v1, v2);
 	unsigned int length;
 
 	std::cout << "ADD NEW PATH: shortest path: " <<std::endl;
-	std::cout << shortestPath.size() << std::endl;//
 	for (int i = 0; i < shortestPath.size() - 1; ++i) {
-		std::cout << i << std::endl;
-	//	std::cout << vertices[i].size() << std::endl;
-		std::cout << vertices[shortestPath[i]].size() << std::endl;
-	//	for (int j = 0; j < vertices[i].size(); ++j) {
-		for (int j = 0; j < vertices[shortestPath[i]].size(); ++j) {
-			std::cout << j << std::endl;
+		for (int j = 0; j < vertices[shortestPath[i]].size(); ++j) { //finding length of new edge
 			if (vertices[shortestPath[i]][j].first == shortestPath[i + 1]) {
-				std::cout << "I found it!" << std::endl;
 				length = vertices[shortestPath[i]][j].second;
 				break;
 			}
@@ -328,8 +302,7 @@ std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > Graph::fi
 	}
 
 	result.resize(number_of_odd_vertices);
-	for (int i = 0; i < number_of_odd_vertices; ++i) {
-		
+	for (int i = 0; i < number_of_odd_vertices; ++i) { // finding the shortest paths between each of odd vertices
 		prev = dijsktra_pairs[i].first;
 		cost = dijsktra_pairs[i].second;
 
@@ -349,7 +322,6 @@ std::vector< std::vector<std::pair<std::vector<unsigned int>, int> > > Graph::fi
 			}
 		}
 	}
-
 	return result;
 }
 
@@ -389,7 +361,6 @@ std::pair<std::vector<int>, std::vector<int> > Graph::dijsktra(unsigned int star
 			}
 		}
 	}
-
 	return std::make_pair(prev, cost);
 }
 
@@ -406,9 +377,7 @@ unsigned int Graph::findCheapVertice(std::vector<int>& cost, std::vector<bool>& 
 	return min_index;
 }
 
-//////////////////////////////////////////////
-
-void Graph::DFSMinimalMatching(//1st line - variables which will use to get data of vertices and set edges; 2nd - 
+void Graph::DFSMinimalMatching(//1st line - variables which will use to get data of vertices and set edges; USUNAC LICZNIK! DODAC KOMENTARZE
 	std::vector<unsigned int>& oddVertices, std::vector< std::vector< std::pair<unsigned int, unsigned int> > >& oddVerticesNeighbours, std::vector<std::pair<unsigned int, unsigned int> >& oddEdges,
 	std::vector<bool> visited, int& minimum, std::vector<std::pair<unsigned int, unsigned int> > edges, unsigned int length_of_edges, int& licznik)
 {
@@ -499,7 +468,3 @@ void Graph::DFSMinimalMatching(//1st line - variables which will use to get data
 	visited[index_of_vertice] = false;
 	++index_of_vertice;
 }
-
-
-//////////////////////////////////////////////
-

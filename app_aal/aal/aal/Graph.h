@@ -11,7 +11,6 @@ private:
 	unsigned int number_of_vertices;
 	unsigned int number_of_edges;
 
-	std::vector<unsigned int> getOddVertices();
 	void DFSEuler(unsigned int v, std::vector<unsigned int>& euler, std::vector< std::vector<bool> >&visited);
 	std::vector<std::vector<bool>> createVisitedVector();
 	std::vector<unsigned int> findEulerianCycle();
@@ -36,6 +35,8 @@ public:
 	void showGraph();
 	unsigned int getNumberOfVertices() { return number_of_vertices; };
 	unsigned int getNumberOfEdges() { return number_of_edges; };
+	std::vector<unsigned int> getOddVertices();
+	std::vector<unsigned int> getEvenVertices();
 
 	std::pair<std::vector<unsigned int>, unsigned int> findWay();
 };
