@@ -55,8 +55,8 @@ void write(std::pair<std::vector<unsigned int>, unsigned int> path) {
 }
 
 void showOptions() {
-	std::cout << "Program finds the shortest path in graph. Path begins and ends at the same vertice and includes all of edges." << std::endl;
-	std::cout << "You should set one of flags and parameters): " << std::endl
+	std::cout << "Program finds the shortest path in a graph. Path begins and ends at the same vertice and includes all of the edges." << std::endl;
+	std::cout << "You should set one of flags and parameters: " << std::endl
 	<< "	-file <in.txt>  -- program analyses graph from file. File has to be in \"data\" folder" << std::endl
 	<< "	-eulerian <number_of_vertices> <number_of_edges>  -- program generates eulerian graph and analyses it. Set number of vertices and edges in new graph (number of edges >= number of vertices)" << std::endl
 	<< "	-2odd <number_of_vertices> <number_of_edges>  -- program generates graph with 2 odd vertices and analyses it. Set number of vertices and edges in new graph (number of edges >= number of vertices - 1)" << std::endl
