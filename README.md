@@ -15,7 +15,7 @@ Kompilacja wykonuje się poprzez wywołanie make w folderze z plikami źródłow
 ./aal <flag> <parameters>
 
 ### Argumenty wywołania: 
-| Argumenty | Parametry | Znaczenie |
+| Flagi | Parametry | Znaczenie |
 | ------ | ------ | ------ |
 | -file| <file_name> | Wykonuje program z danymi z pliku o nazwie file_name. Plik musi znajdować się w folderze data |
 | -eulerian | <number_of_vertices> <number_of_edges> | Wykonuje program z wygenerowanymi danymi. Generowany jest graf, który posiada cykl eulera. |
@@ -25,13 +25,13 @@ Kompilacja wykonuje się poprzez wywołanie make w folderze z plikami źródłow
 Parametry number_of_vertices, number_of_edges i number_of_odd_vertices służą do sparametryzowania generatora.
 
 ### Format pliku w wywołaniu z parametrem -file:
-v01 v02 le0
-v11 v12 le1
-...
-vi1 vi2 lei
+v01 v02 le0 <br />
+v11 v12 le1 <br />
+... <br />
+vi1 vi2 lei <br />
 
-vi1 - indeks początkowego wierzchołka opisywanej krawędzi
-vi2 - indeks końcowego wierzchołka opisywanej krawędzi
+vi1 - indeks początkowego wierzchołka opisywanej krawędzi <br />
+vi2 - indeks końcowego wierzchołka opisywanej krawędzi <br />
 lei - długość opisywanej krawędzi
 
 ### Wyjscie
