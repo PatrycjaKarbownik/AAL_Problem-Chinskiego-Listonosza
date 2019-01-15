@@ -84,7 +84,7 @@ std::pair<std::vector<unsigned int>, unsigned int> Graph::findWay()
 	}
 	else { //2 or more odd vertices
 		makeEulerianGraph(oddVertices);
-			std::cout << std::endl << "Graph at the beginning:" << std::endl;
+			std::cout << std::endl << "Graph after changing to eulerian graph:" << std::endl;
 			showGraph();
 		lengthOfEulerianCycle = lengthOfAllEdges();
 		euler = findEulerianCycle();
@@ -101,14 +101,14 @@ unsigned int Graph::lengthOfAllEdges() {
 	unsigned int number_of_neighbours;
 	unsigned int end_of_edge_coord, begin_of_edge_coord;
 
-	for (unsigned int i = 0; i < number_of_vertices; ++i) { // we're reviewing vertices and their neighbours;
+	for (unsigned int i = 0; i < number_of_vertices; ++i) { //reviewing vertices and their neighbours;
 		number_of_neighbours = visited[i].size();
 		for (unsigned int j = 0; j < number_of_neighbours; ++j) {
 			if (visited[i][j] == false) {// "delete" edge
 				visited[i][j] = true;
-				end_of_edge_coord = vertices[i][j].first; //get end of edge which is the coord in matrix in the next step
+				end_of_edge_coord = vertices[i][j].first; //getting end of edge which is the coord in matrix in the next step
 
-				for (int k = 0; k < visited[end_of_edge_coord].size(); ++k) { //find coord in matrix with begin from the edge
+				for (int k = 0; k < visited[end_of_edge_coord].size(); ++k) { //finding coord in matrix with begin from the edge
 					if (visited[end_of_edge_coord][k] == false && vertices[end_of_edge_coord][k].first == i) {
 						begin_of_edge_coord = k;
 						break;
@@ -116,7 +116,7 @@ unsigned int Graph::lengthOfAllEdges() {
 				}
 
 				visited[end_of_edge_coord][begin_of_edge_coord] = true; //end "delete" edge
-				length += vertices[i][j].second;						// add length of the edge to entire length
+				length += vertices[i][j].second;						// adding length of the edge to entire length
 			}
 		}
 	}
@@ -137,7 +137,7 @@ void Graph::DFSEuler(unsigned int v, std::vector<unsigned int>& euler, std::vect
 	//is used to find eulerian cycle
 	unsigned int end_of_edge_coord, begin_of_edge_coord;
 	unsigned int number_of_neighbours = visited[v].size();
-	for (unsigned int i = 0; i < number_of_neighbours; i++)  // we're reviewing vertices and their neighbours;
+	for (unsigned int i = 0; i < number_of_neighbours; i++)  //reviewing vertices and their neighbours;
 		while (!visited[v][i])
 		{							// "delete" edge
 			visited[v][i] = true;
@@ -152,7 +152,7 @@ void Graph::DFSEuler(unsigned int v, std::vector<unsigned int>& euler, std::vect
 			DFSEuler(vertices[v][i].first, euler, visited); //recursion
 		}
 
-	euler.push_back(v);  // add vertice to eulerian cycle
+	euler.push_back(v);  // adding vertice to eulerian cycle
 }
 
 void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
@@ -179,11 +179,11 @@ void Graph::makeEulerianGraph(std::vector<unsigned int>& oddVertices) {
 		for (unsigned int i = 0; i < number_of_oddVertices; ++i)
 			visited.push_back(false);
 		std::vector<std::pair<unsigned int, unsigned int> > oddEdges, edges;
-		int minimum = INT_MAX;
+		int minimum = INT8_MAX;
 
 		DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, 0);
 
-		//adding new edges (graph have to be eulerian)
+		//adding new edges (graph has to be eulerian)
 		addNewPaths(oddVertices, oddEdges, shortestPaths);
 	}
 }
@@ -303,7 +303,7 @@ std::pair<std::vector<int>, std::vector<int> > Graph::dijsktra(unsigned int star
 	unsigned int coord_of_neighbour;
 
 	for (unsigned int i = 0; i < number_of_vertices; ++i) {
-		cost[i] = INT_MAX;
+		cost[i] = INT8_MAX;
 		prev[i] = -1;
 		NUset[i] = false;
 	}
@@ -332,7 +332,7 @@ std::pair<std::vector<int>, std::vector<int> > Graph::dijsktra(unsigned int star
 
 unsigned int Graph::findCheapVertice(std::vector<int>& cost, std::vector<bool>& NUset) {
 	// is used in dijsktra algorithm
-	int min = INT_MAX;
+	int min = INT8_MAX;
 	unsigned int min_index;
 
 	for (int v = 0; v < number_of_vertices; ++v)
@@ -382,7 +382,7 @@ void Graph::DFSMinimalMatching(//1st line - variables which will use to get data
 		if (visited[index_of_neighbour] == false) {
 			visited[index_of_vertice] = true;
 			visited[index_of_neighbour] = true;
-			edges.push_back(std::make_pair(oddVertices[index_of_vertice], oddVertices[index_of_neighbour])); //create new edge on analyse path
+			edges.push_back(std::make_pair(oddVertices[index_of_vertice], oddVertices[index_of_neighbour])); //createing new edge on analyse path
 			length_of_edges += oddVerticesNeighbours[index_of_vertice][j].second;
 
 			DFSMinimalMatching(oddVertices, oddVerticesNeighbours, oddEdges, visited, minimum, edges, length_of_edges); //recursion
