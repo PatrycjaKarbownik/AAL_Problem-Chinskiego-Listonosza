@@ -1,3 +1,6 @@
+//Author: Patrycja Karbownik
+//Problem: AAL.8 - Przygotowanie pod maraton (Problem chinskiego listonosza)
+
 #pragma once
 
 #include <vector>

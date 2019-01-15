@@ -1,3 +1,6 @@
+//Author: Patrycja Karbownik
+//Problem: AAL.8 - Przygotowanie pod maraton (Problem chinskiego listonosza)
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -67,12 +70,11 @@ int main(/*int argc, char **argv*/) {
 	// (1)
 	//read from file. I have to edit this
 	
-	const char *nameOfFile = "data\\test8.txt";//"aal/aal/data/test7.txt"; //then I change it to read from args //delete const
+	const char *nameOfFile = "data\\test9.txt";//"aal/aal/data/test7.txt"; //then I change it to read from args //delete const
 	read(graph, nameOfFile);
+	std::cout << std::endl << "Graph before adding edges in order to create eulerian graph" << std::endl;
 	graph.showGraph();
 	
-
-
 	//(2)
 	//generator
 	// -eulerian

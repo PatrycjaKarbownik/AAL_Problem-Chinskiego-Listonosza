@@ -1,3 +1,6 @@
+//Author: Patrycja Karbownik
+//Problem: AAL.8 - Przygotowanie pod maraton (Problem chinskiego listonosza)
+
 #include "Generator.h"
 
 Generator::Generator()
@@ -13,8 +16,8 @@ unsigned int Generator::myRandom(unsigned int mod) {
 	return std::rand() % mod;
 }
 
-Graph Generator::eulerianGraph(Graph& graph, unsigned int number_of_vertices, unsigned int number_of_edges)
-{
+Graph Generator::eulerianGraph(Graph& graph, unsigned int number_of_vertices, unsigned int number_of_edges) {
+	//generates new eurelian graph
 	unsigned int addedEdges = 0;
 	std::vector<unsigned int> vertices = beginningOfGenerateGraph(graph, number_of_vertices, number_of_edges, addedEdges);
 
@@ -31,6 +34,7 @@ Graph Generator::eulerianGraph(Graph& graph, unsigned int number_of_vertices, un
 }
 
 Graph Generator::graphWith2OddVertices(Graph& graph, unsigned int number_of_vertices, unsigned int number_of_edges) {
+	//generate new graph with 2 odd vertices
 	unsigned int addedEdges = 0;
 	std::vector<unsigned int> vertices = beginningOfGenerateGraph(graph, number_of_vertices, number_of_edges, addedEdges);
 
@@ -51,12 +55,11 @@ Graph Generator::graphWith2OddVertices(Graph& graph, unsigned int number_of_vert
 		if (addedEdges < number_of_edges)
 			addRemainingEdges(graph, number_of_edges - addedEdges);
 	}
-
-
 	return graph;
 }
 
 Graph Generator::graphWithMoreThan2OddVertices(Graph & graph, unsigned int number_of_vertices, unsigned int number_of_edges, unsigned int number_of_odd_vertices) {
+	//generate new graph with more than 2 odd vertices
 	unsigned int addedEdges = 0;
 	std::vector<unsigned int> vertices = beginningOfGenerateGraph(graph, number_of_vertices, number_of_edges, addedEdges);
 	std::vector<unsigned int> oddVertices = graph.getOddVertices();
