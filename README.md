@@ -1,7 +1,7 @@
 **Autor: Patrycja Karbownik**
 
-### AAL_Problem-Chinskiego-Listonosza
-AAL_8. Projekt z przedmiotu Analiza Algorytmów
+## AAL_Problem-Chinskiego-Listonosza
+## AAL_8. Projekt z przedmiotu Analiza Algorytmów
 
 W lasku Kampinoskim jest wiele ścieżek biegowo-rowerowych. Przygotowując się pod maraton zawodnik chce przebiec wszystkimi ścieżkami. Każdą ze ścieżek można pobiec w obu kierunkach i każda z nich ma określoną długość.
 Należy wyznaczyć taką trasę biegaczowi która pokryje wszystkie ścieżki gdzie sumaryczny dystans będzie najmniejszy.
@@ -12,7 +12,7 @@ Problem postawiony w treści zadania jest problemem chińskiego listonosza. Spro
 Kompilacja wykonuje się poprzez wywołanie make w folderze z plikami źródłowymi.
 
 ### Wywołanie:
-./aal <flag> <parameters>
+./aal \<flag> \<parameters>
 
 ### Argumenty wywołania: 
 | Flagi | Parametry | Znaczenie |
