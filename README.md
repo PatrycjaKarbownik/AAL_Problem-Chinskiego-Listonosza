@@ -12,7 +12,7 @@ Problem postawiony w treści zadania jest problemem chińskiego listonosza. Spro
 Kompilacja wykonuje się poprzez wywołanie make w folderze z plikami źródłowymi.
 
 ### Wywołanie:
-./aal \<flag> \<parameters>
+./aal \<flags> \<parameters>
 
 ### Argumenty wywołania: 
 | Flagi | Parametry | Znaczenie |
@@ -24,6 +24,8 @@ Kompilacja wykonuje się poprzez wywołanie make w folderze z plikami źródłow
 
 Parametry number_of_vertices, number_of_edges i number_of_odd_vertices służą do sparametryzowania generatora.
 
+Dodatkową flagą dodawaną przed innymi jest flaga -analysis, która sprawia, że liczony jest czas wykonania głównego algorytmu, potrzebny do analiz złożoności
+
 ### Format pliku w wywołaniu z parametrem -file:
 v01 v02 le0 <br />
 v11 v12 le1 <br />
@@ -34,11 +36,13 @@ vi1 - indeks początkowego wierzchołka opisywanej krawędzi <br />
 vi2 - indeks końcowego wierzchołka opisywanej krawędzi <br />
 lei - długość opisywanej krawędzi
 
+Wierzchołki numerowane są od 0 po kolei liczbami naturalnymi
+
 ### Wyjscie
 Na wyjsciu otrzymujemy przebieg cyklu eulera oraz jego długość.
 Wyświetlana wcześniej struktura grafu wspomaga analizę problemu.
 
 ### Wykorzystane algorytmy:
-- DFS - lekko zmodyfikowany do szukania cyklu Eulera oraz 
+- DFS - lekko zmodyfikowany do szukania cyklu Eulera 
 - Dijsktra - do wyszukiwania najkrótszych ścieżek między nieparzystymi wierzchołkami grafu
 - Brute-force - do szukania minimalnego skojarzenia (połączenie nieparzystych wierzchołków w pary, które daje najmniejszą sumę wag). W algorytmie wykorzystywany też algorytm DFS.

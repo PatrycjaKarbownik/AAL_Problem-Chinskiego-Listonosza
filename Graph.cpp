@@ -84,8 +84,8 @@ std::pair<std::vector<unsigned int>, unsigned int> Graph::findWay()
 	}
 	else { //2 or more odd vertices
 		makeEulerianGraph(oddVertices);
-			std::cout << std::endl << "Graph after changing to eulerian graph:" << std::endl;
-			showGraph();
+			//std::cout << std::endl << "Graph after changing to eulerian graph:" << std::endl;
+			//showGraph();
 		lengthOfEulerianCycle = lengthOfAllEdges();
 		euler = findEulerianCycle();
 	}

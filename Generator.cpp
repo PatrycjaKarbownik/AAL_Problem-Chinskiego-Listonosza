@@ -5,14 +5,14 @@
 
 Generator::Generator()
 {
-	std::srand(unsigned(std::time(0)));
+//	std::srand(std::time(NULL));
 }
 
 Generator::~Generator()
 {
 }
 
-unsigned int Generator::myRandom(unsigned int mod) {
+int Generator::myRandom(int mod) {
 	return std::rand() % mod;
 }
 
