@@ -61,36 +61,36 @@ Problem chińskiego listonosza można podzielić na trzy podproblemy:
 		e. Znajdujemy cykl Eulera i sumujemy wagi wszystkich krawędzi multigrafu.
 			
 ### Algorytm generujący grafy:
-Analizowane programem grafy możemy podzielić na trzy różne rodzaje:
-	1. Grafy zawierające cykl Eulera
-	2. Graf z dwoma nieparzystymi wierzchołkami
-	3. Grafy z większą ilością nieparzystych wierzchołków (większą niż 2)
+Analizowane programem grafy możemy podzielić na trzy różne rodzaje: <br />
+	1. Grafy zawierające cykl Eulera <br />
+	2. Graf z dwoma nieparzystymi wierzchołkami <br />
+	3. Grafy z większą ilością nieparzystych wierzchołków (większą niż 2) <br />
 	
 Dla każdego rodzaju stworzyłam osobne generatory:
-W pierwszym etapie w każdym z generatorów dodaję do wektora podaną przez użytkownika liczbę wierzchołków, mieszam je, a następnie łączę je ze sobą po kolei (0-1, 1-2, … n-3 – n-2, n-2 – n-1).
-Grafy eulerowskie:
-	1. Łączę ze sobą ostatni i pierwszy wierzchołek (n-1 – 0)
-	2. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało przy wstępnym łączeniu wierzchołków:
-		a. Jeśli tak - przechodzę do kroku wspólnego dla wszystkich generatorów.
-		b. Jeśli nie – kończę działanie generatora.
-Grafy z dwoma nieparzystymi wierzchołkami:
-	1. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało przy wstępnym łączeniu wierzchołków:
-		a. Jeśli tak – losuję dwa wierzchołki (jeden o nieparzystym stopniu, drugi o parzystym) i łączę je. Następnie znowu sprawdzam czy użytkownik chce więcej krawędzi w grafie niż do tej pory powstało:
-			i. Jeśli tak – przechodzę do kroku wspólnego dla wszystkich generatorów.
-			ii. Jeśli nie – kończę działanie generatora.
-		b. Jeśli nie – kończę działanie generatora.
-Grafy z większą niż 2 liczbą nieparzystych wierzchołków:
-	Graf powstały po wstępnym łączeniu wierzchołków posiada dwa nieparzyste wierzchołki.
-	1. Dopóki graf nie posiada tylu nieparzystych wierzchołków, jaką zażądał użytkownik – losuję dwa wierzchołki o parzystych stopniach i łączę je ze sobą krawędzią.
-	2. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało do tej pory:
-		a. Jeśli tak - przechodzę do kroku wspólnego dla wszystkich generatorów.
-		b. Jeśli nie – kończę działanie generatora.
+	W pierwszym etapie w każdym z generatorów dodaję do wektora podaną przez użytkownika liczbę wierzchołków, mieszam je, a następnie łączę je ze sobą po kolei (0-1, 1-2, … n-3 – n-2, n-2 – n-1).
+	Grafy eulerowskie:
+		1. Łączę ze sobą ostatni i pierwszy wierzchołek (n-1 – 0)
+		2. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało przy wstępnym łączeniu wierzchołków:
+			a. Jeśli tak - przechodzę do kroku wspólnego dla wszystkich generatorów.
+			b. Jeśli nie – kończę działanie generatora.
+	Grafy z dwoma nieparzystymi wierzchołkami:
+		1. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało przy wstępnym łączeniu wierzchołków:
+			a. Jeśli tak – losuję dwa wierzchołki (jeden o nieparzystym stopniu, drugi o parzystym) i łączę je. Następnie znowu sprawdzam czy użytkownik chce więcej krawędzi w grafie niż do tej pory powstało:
+				i. Jeśli tak – przechodzę do kroku wspólnego dla wszystkich generatorów.
+				ii. Jeśli nie – kończę działanie generatora.
+			b. Jeśli nie – kończę działanie generatora.
+	Grafy z większą niż 2 liczbą nieparzystych wierzchołków:
+		Graf powstały po wstępnym łączeniu wierzchołków posiada dwa nieparzyste wierzchołki.
+		1. Dopóki graf nie posiada tylu nieparzystych wierzchołków, jaką zażądał użytkownik – losuję dwa wierzchołki o parzystych stopniach i łączę je ze sobą krawędzią.
+		2. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało do tej pory:
+			a. Jeśli tak - przechodzę do kroku wspólnego dla wszystkich generatorów.
+			b. Jeśli nie – kończę działanie generatora.
 
-Krok wspólny dla wszystkich generatorów:
-	1. Sprawdzam jaka zostaje reszta z dzielenia liczby krawędzi, która pozostała do stworzenia przez 3:
-		a. Jeśli 1 – losuję jeden z wierzchołek i dodaję pętlę
-		b. Jeśli 2 – losuję dwa wierzchołki i dodaję między nimi dwie krawędzie
-		c. Jeśli trzy – losuję trzy wierzchołki i dodaję między nimi po jednej krawędzi.
-	2. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało do tej pory:
-		a. Jeśli tak (liczba ta jest zawsze podzielna przez 3) – losuję trzy wierzchołki i dodaję między nimi po jednej krawędzi.
-		b. Jeśli nie – kończę działanie generatora.
+	Krok wspólny dla wszystkich generatorów:
+		1. Sprawdzam jaka zostaje reszta z dzielenia liczby krawędzi, która pozostała do stworzenia przez 3:
+			a. Jeśli 1 – losuję jeden z wierzchołek i dodaję pętlę
+			b. Jeśli 2 – losuję dwa wierzchołki i dodaję między nimi dwie krawędzie
+			c. Jeśli trzy – losuję trzy wierzchołki i dodaję między nimi po jednej krawędzi.
+		2. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało do tej pory:
+			a. Jeśli tak (liczba ta jest zawsze podzielna przez 3) – losuję trzy wierzchołki i dodaję między nimi po jednej krawędzi.
+			b. Jeśli nie – kończę działanie generatora.
