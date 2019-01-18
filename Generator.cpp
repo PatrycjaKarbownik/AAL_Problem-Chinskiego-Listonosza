@@ -3,15 +3,6 @@
 
 #include "Generator.h"
 
-Generator::Generator()
-{
-//	std::srand(std::time(NULL));
-}
-
-Generator::~Generator()
-{
-}
-
 int Generator::myRandom(int mod) {
 	return std::rand() % mod;
 }

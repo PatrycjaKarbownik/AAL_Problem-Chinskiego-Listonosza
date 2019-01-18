@@ -30,8 +30,8 @@ private:
 		std::vector<bool> visited, int& minimum, std::vector<std::pair<unsigned int, unsigned int> > edges, unsigned int length_of_edges);
 
 public:
-	Graph();
-	~Graph();
+	Graph(){};
+	~Graph(){};
 	void add(unsigned int first, unsigned int second, unsigned int length); //adding new edge
 	void resize(unsigned int number_of_vertices); //resizing vector with vertices
 	void showGraph();

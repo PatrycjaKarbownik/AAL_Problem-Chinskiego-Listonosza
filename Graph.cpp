@@ -3,14 +3,6 @@
 
 #include "Graph.h"
 
-Graph::Graph()
-{
-}
-
-Graph::~Graph()
-{
-}
-
 void Graph::add(unsigned int first, unsigned int second, unsigned int length) {
 	//adding new edge
 	vertices[first].push_back(std::make_pair(second, length));

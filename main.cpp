@@ -12,7 +12,7 @@
 #include "Graph.h"
 #include "Generator.h"
 
-void read(Graph& graph, char *nameOfFile) //then delete const
+void read(Graph& graph, char *nameOfFile)
 {
 	std::fstream file;
 	std::string name = "data//" + std::string(nameOfFile);
