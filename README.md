@@ -42,14 +42,14 @@ Wierzchołki numerowane są od 0 po kolei liczbami naturalnymi
 Na wyjsciu otrzymujemy przebieg cyklu eulera oraz jego długość.
 Wyświetlana wcześniej struktura grafu wspomaga analizę problemu.
 
-###Dekompozycja:
-####Projekt podzielony jest na pakiety:
+### Dekompozycja:
+#### Projekt podzielony jest na pakiety:
 - Graph – struktura danych jaką jest graf i wszelkie metody potrzebne do przeanalizowania go.
 - Generator – klasa generatora grafów, zależnego od parametrów wywołania programu.
 - Funkcja main – wczytuje parametry wywołania, uruchamia generator grafów lub wczytuje graf z pliku i rozwiązuje problem.
 
-###Opis algorytmów:
-####Opis algorytmu rozwiązującego problem postawiony w zadaniu:
+### Opis algorytmów:
+#### Opis algorytmu rozwiązującego problem postawiony w zadaniu:
 	Problem chińskiego listonosza można podzielić na trzy podproblemy:
 		1. Gdy każdy wierzchołek jest parzystego stopnia (dochodzi do niego parzysta ilość krawędzi), istnieje
 w grafie cykl Eulera (cykl, który przechodzi przez każdą krawędź dokładnie raz) – aby otrzymać wynik,
@@ -69,12 +69,12 @@ początkowym.
 			e. Znajdujemy cykl Eulera i sumujemy wagi wszystkich krawędzi multigrafu.
 			
 			
-####Algorytm generujący grafy:
-	######Analizowane programem grafy możemy podzielić na trzy różne rodzaje:
+#### Algorytm generujący grafy:
+	###### Analizowane programem grafy możemy podzielić na trzy różne rodzaje:
 	1. Grafy zawierające cykl Eulera
 	2. Graf z dwoma nieparzystymi wierzchołkami
 	3. Grafy z większą ilością nieparzystych wierzchołków (większą niż 2)
-	#####Dla każdego rodzaju stworzyłam osobne generatory:
+	##### Dla każdego rodzaju stworzyłam osobne generatory:
 		W pierwszym etapie w każdym z generatorów dodaję do wektora podaną przez użytkownika liczbę wierzchołków, mieszam je, a następnie łączę je ze sobą po kolei (0-1, 1-2, … n-3 – n-2, n-2 – n-1).
 	<u>Grafy eulerowskie:</u>
 		1. Łączę ze sobą ostatni i pierwszy wierzchołek (n-1 – 0)
