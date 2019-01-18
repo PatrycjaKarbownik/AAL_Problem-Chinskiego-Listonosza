@@ -68,17 +68,20 @@ Analizowane programem grafy możemy podzielić na trzy różne rodzaje: <br />
 	
 	Dla każdego rodzaju stworzyłam osobne generatory:
 		W pierwszym etapie w każdym z generatorów dodaję do wektora podaną przez użytkownika liczbę wierzchołków, mieszam je, a następnie łączę je ze sobą po kolei (0-1, 1-2, … n-3 – n-2, n-2 – n-1).
+		
 	Grafy eulerowskie:
 		1. Łączę ze sobą ostatni i pierwszy wierzchołek (n-1 – 0)
 		2. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało przy wstępnym łączeniu wierzchołków:
 			a. Jeśli tak - przechodzę do kroku wspólnego dla wszystkich generatorów.
 			b. Jeśli nie – kończę działanie generatora.
+			
 	Grafy z dwoma nieparzystymi wierzchołkami:
 		1. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało przy wstępnym łączeniu wierzchołków:
 			a. Jeśli tak – losuję dwa wierzchołki (jeden o nieparzystym stopniu, drugi o parzystym) i łączę je. Następnie znowu sprawdzam czy użytkownik chce więcej krawędzi w grafie niż do tej pory powstało:
 				i. Jeśli tak – przechodzę do kroku wspólnego dla wszystkich generatorów.
 				ii. Jeśli nie – kończę działanie generatora.
 			b. Jeśli nie – kończę działanie generatora.
+			
 	Grafy z większą niż 2 liczbą nieparzystych wierzchołków:
 		Graf powstały po wstępnym łączeniu wierzchołków posiada dwa nieparzyste wierzchołki.
 		1. Dopóki graf nie posiada tylu nieparzystych wierzchołków, jaką zażądał użytkownik – losuję dwa wierzchołki o parzystych stopniach i łączę je ze sobą krawędzią.
