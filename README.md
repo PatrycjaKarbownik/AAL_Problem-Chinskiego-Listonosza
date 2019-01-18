@@ -50,15 +50,15 @@ Wyświetlana wcześniej struktura grafu wspomaga analizę problemu.
 
 ## Opis algorytmów
 ### Opis algorytmu rozwiązującego problem postawiony w zadaniu:
-Problem chińskiego listonosza można podzielić na trzy podproblemy:
-	1. Gdy każdy wierzchołek jest parzystego stopnia (dochodzi do niego parzysta ilość krawędzi), istnieje w grafie cykl Eulera (cykl, który przechodzi przez każdą krawędź dokładnie raz) – aby otrzymać wynik, wyszukujemy cykl Eulera przy pomocy rekurencyjnej procedury DFS i sumujemy wagi wszystkich krawędzi.
-	2. Dwa wierzchołki są nieparzystego stopnia – należy znaleźć najkrótszą ścieżkę między wierzchołkami nieparzystego stopnia (do tego posłuży nam algorytm Dijkstry), zdublować krawędzie, którymi prowadzi ścieżka i znaleźć cykl Eulera, a następnie zsumować wagi wszystkich krawędzi multigrafu.
-	3. Więcej niż dwa wierzchołki są nieparzystego stopnia:
-		a. Wyszukujemy wszystkie wierzchołki nieparzystego stopnia.
-		b. Za pomocą algorytmu Dijkstry znajdujemy najkrótsze ścieżki między nieparzystymi wierzchołkami.
-		c. Wyszukujemy skojarzenie tych wierzchołków w pary o najmniejszej sumie wag krawędzi – brute-force wykorzystujący algorytm DFS
-		d. Krawędzie wchodzące w skład wyznaczonych ścieżek skojarzenia dublujemy w grafie początkowym.
-		e. Znajdujemy cykl Eulera i sumujemy wagi wszystkich krawędzi multigrafu.
+	Problem chińskiego listonosza można podzielić na trzy podproblemy:
+		1. Gdy każdy wierzchołek jest parzystego stopnia (dochodzi do niego parzysta ilość krawędzi), istnieje w grafie cykl Eulera (cykl, który przechodzi przez każdą krawędź dokładnie raz) – aby otrzymać wynik, wyszukujemy cykl Eulera przy pomocy rekurencyjnej procedury DFS i sumujemy wagi wszystkich krawędzi.
+		2. Dwa wierzchołki są nieparzystego stopnia – należy znaleźć najkrótszą ścieżkę między wierzchołkami nieparzystego stopnia (do tego posłuży nam algorytm Dijkstry), zdublować krawędzie, którymi prowadzi ścieżka i znaleźć cykl Eulera, a następnie zsumować wagi wszystkich krawędzi multigrafu.
+		3. Więcej niż dwa wierzchołki są nieparzystego stopnia:
+			a. Wyszukujemy wszystkie wierzchołki nieparzystego stopnia.
+			b. Za pomocą algorytmu Dijkstry znajdujemy najkrótsze ścieżki między nieparzystymi wierzchołkami.
+			c. Wyszukujemy skojarzenie tych wierzchołków w pary o najmniejszej sumie wag krawędzi – brute-force wykorzystujący algorytm DFS
+			d. Krawędzie wchodzące w skład wyznaczonych ścieżek skojarzenia dublujemy w grafie początkowym.
+			e. Znajdujemy cykl Eulera i sumujemy wagi wszystkich krawędzi multigrafu.
 			
 ### Algorytm generujący grafy:
 Analizowane programem grafy możemy podzielić na trzy różne rodzaje: <br />
@@ -66,8 +66,8 @@ Analizowane programem grafy możemy podzielić na trzy różne rodzaje: <br />
 	2. Graf z dwoma nieparzystymi wierzchołkami <br />
 	3. Grafy z większą ilością nieparzystych wierzchołków (większą niż 2) <br />
 	
-Dla każdego rodzaju stworzyłam osobne generatory:
-	W pierwszym etapie w każdym z generatorów dodaję do wektora podaną przez użytkownika liczbę wierzchołków, mieszam je, a następnie łączę je ze sobą po kolei (0-1, 1-2, … n-3 – n-2, n-2 – n-1).
+	Dla każdego rodzaju stworzyłam osobne generatory:
+		W pierwszym etapie w każdym z generatorów dodaję do wektora podaną przez użytkownika liczbę wierzchołków, mieszam je, a następnie łączę je ze sobą po kolei (0-1, 1-2, … n-3 – n-2, n-2 – n-1).
 	Grafy eulerowskie:
 		1. Łączę ze sobą ostatni i pierwszy wierzchołek (n-1 – 0)
 		2. Sprawdzam czy użytkownik chce więcej krawędzi niż powstało przy wstępnym łączeniu wierzchołków:
