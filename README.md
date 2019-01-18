@@ -48,7 +48,7 @@ Wyświetlana wcześniej struktura grafu wspomaga analizę problemu.
 - Generator – klasa generatora grafów, zależnego od parametrów wywołania programu.
 - Funkcja main – wczytuje parametry wywołania, uruchamia generator grafów lub wczytuje graf z pliku i rozwiązuje problem.
 
-### Opis algorytmów:
+### Opis algorytmów
 #### Opis algorytmu rozwiązującego problem postawiony w zadaniu:
 	Problem chińskiego listonosza można podzielić na trzy podproblemy:
 		1. Gdy każdy wierzchołek jest parzystego stopnia (dochodzi do niego parzysta ilość krawędzi), istnieje
@@ -70,7 +70,7 @@ początkowym.
 			
 			
 #### Algorytm generujący grafy:
-	###### Analizowane programem grafy możemy podzielić na trzy różne rodzaje:
+	##### Analizowane programem grafy możemy podzielić na trzy różne rodzaje:
 	1. Grafy zawierające cykl Eulera
 	2. Graf z dwoma nieparzystymi wierzchołkami
 	3. Grafy z większą ilością nieparzystych wierzchołków (większą niż 2)
